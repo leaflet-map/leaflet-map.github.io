@@ -1,5 +1,5 @@
-const __DEFAULTFEATURENAME__ = "allfeatures21";
-const __DEFAULTMARKERICON__ = "bus";
+const __DEFAULTFEATURENAME__ = "allfeatures";
+const __DEFAULTMARKERICON__ = "pin";
 
 customElements.define(
   "leaflet-map",
