@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <title><leaflet-map> Web Component</title>
+    <script src="element.js"></script>
+    <script src="https://file-size.github.io/elements.js"></script>
+    <style>
+        body {
+            font: 21px arial;
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        maps {
+            display: grid;
+            grid: 290px 290px/1fr 1fr;
+            gap: 5px;
+            background: green
+        }
+    </style>
+    <h1>&lt;leaflet-map> Web Component</h1>
+    <maps>
+        <leaflet-map id=M1 coords="52.09,5.12">
+            <marker lat="52.09" lng="5.12" openPopup label="postcode">
+                <b>Roads Technology</b><br>Opaallaan 1180<br>2031 EC Haarlem<br>06-12345678<br><a
+                    href=''>www.Roads-Technology.nl</a>
+            </marker>
+        </leaflet-map>
+        <leaflet-map coords="52.372,4.885" zoom="15">
+            <marker openPopup>
+                <b>Amsterdam</b><br>Amsterdam is the capital of the Netherlands.
+            </marker>
+        </leaflet-map>
+        <leaflet-map coords="51.924,4.47" icon="//roads.nl/content/themes/Arkin-Roads/images/favicon-96x96.png">
+            <marker openPopup label="Roads Technology">
+                <b>Rotterdam</b><br>Rotterdam is the second largest city of the Netherlands.
+            </marker>
+            <style shadowRoot>
+                .leaflet-tooltip {
+                    background: #9cc318;
+                    padding: 0 2px;
+                    color: black;
+                    border-color: black;
+                }
+
+                .leaflet-tooltip-bottom:before {
+                    border-bottom-color: black;
+                }
+            </style>
+        </leaflet-map>
+        <leaflet-map coords="50.85,5.69" icon="house">
+            <marker lat="51.924" lng="4.47">
+                <b>Rotterdam</b><br>Rotterdam is the second largest city of the Netherlands.
+            </marker>
+            <marker lat="50.85" lng="5.69">
+                <b>Maastricht</b><br>Maastricht is the capital of the province of Limburg.
+            </marker>
+        </leaflet-map>
+    </maps>
+    <hr>
+    <file-size gz src="element.min.js"></file-size>
+    <script>
+        console.log(document.querySelectorAll('leaflet-map'), M1.features);
+    </script>
+</body>
+
+</html>
