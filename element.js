@@ -1,9 +1,9 @@
-const __DEFAULTFEATURENAME__ = "allfeatures";
-const __DEFAULTMARKERICON__ = "pin";
+const __feature__ = "allfeatures";
+const __marker__ = "pin";
 
 customElements.define(
   "leaflet-map",
-  class FOO extends HTMLElement {
+  class leafletMap extends HTMLElement {
     // ************************************************************************ Properties
     // ======================================================================== CDN
     get CDN() {
@@ -26,17 +26,17 @@ customElements.define(
       return this.shadowRoot.querySelector("div");
     }
     // ======================================================================== defaultMarkerIcon
-    get markercolor() {
-      return this.getAttribute("markercolor") || "royalblue";
-    }
-    get defaultMarkerIcon() {
-      return this.L.icon({
-        iconSize: [25, 41],
-        iconAnchor: [12, 39],
-        iconUrl: this.CDN + "/images/marker-icon.png",
-        shadowUrl: this.CDN + "/images/marker-shadow.png",
-      });
-    }
+    // get markercolor() {
+    //   return this.getAttribute("markercolor") || "royalblue";
+    // }
+    // get defaultMarkerIcon() {
+    //   return this.L.icon({
+    //     iconSize: [25, 41],
+    //     iconAnchor: [12, 39],
+    //     iconUrl: this.CDN + "/images/marker-icon.png",
+    //     shadowUrl: this.CDN + "/images/marker-shadow.png",
+    //   });
+    // }
     // ************************************************************************ Lifecycle
     // ======================================================================== constructor
     constructor() {
@@ -76,7 +76,8 @@ customElements.define(
       );
       this.map.on("zoomend", (leafletEvent) => this.mapzoomend(leafletEvent));
       this.setView({
-        coords: this.getAttribute("coords"),
+        lat: this.getAttribute("lat") || 52.2957,
+        lng: this.getAttribute("lng") || 4.6804,
       });
     }
     // ======================================================================== mapclick
@@ -105,30 +106,25 @@ customElements.define(
     // ======================================================================== addmarkers
     addmarkers({ markers } = { markers: this.querySelectorAll("marker") }) {
       markers.forEach((markerNode) => {
-        let [lat, lng] = this.latlng(
-          markerNode.getAttribute("lat") || undefined,
-          markerNode.getAttribute("lng") || undefined,
-          markerNode.getAttribute("coords")
-        );
         let _attr = (name) =>
           markerNode.getAttribute(name) ||
           markerNode.parentNode.getAttribute(name);
         this.marker({
           markerNode,
-          lat,
-          lng,
+          lat: markerNode.getAttribute("lat") || undefined,
+          lng: markerNode.getAttribute("lng") || undefined,
           popup: markerNode.innerHTML,
-          openPopup: _attr("openPopup"),
-          feature: _attr("feature") || __DEFAULTFEATURENAME__,
-          icon: _attr("icon") || __DEFAULTMARKERICON__,
+          openPopup: markerNode.hasAttribute("openPopup"),
+          feature: _attr("feature") || __feature__,
+          icon: _attr("icon") || __marker__,
         });
       });
       this.fitBounds({
-        feature: this.getAttribute("feature") || __DEFAULTFEATURENAME__,
+        feature: this.getAttribute("feature") || __feature__,
       });
     }
     // ======================================================================== fitBounds
-    fitBounds({ feature, lat = false, lng = false, coords = false }) {
+    fitBounds({ feature }) {
       if (feature) {
         let featureGroup = this.getFeatureGroup(feature);
         let count = featureGroup.getLayers().length;
@@ -136,18 +132,8 @@ customElements.define(
         else if (count) this.map.panInsideBounds(featureGroup.getBounds());
         else console.warn(`no fitBounds: ${feature}`);
       } else {
-        [lat, lng] = this.latlng(lat, lng, coords);
         // todo fitBounds to lat lng
       }
-    }
-    // ======================================================================== latlng
-    latlng(lat, lng, coords) {
-      // convert any notation to [lat,lng] Array
-      if (typeof coords === "string") coords = coords.split(",");
-      if (coords) [lat, lng] = coords;
-      if (lat && lng) return [lat, lng];
-      // no lat,lng or coords defined; return the map center
-      return [this.map._lastCenter.lat, this.map._lastCenter.lng];
     }
     // ======================================================================== feature
     getFeatureGroup(name) {
@@ -156,35 +142,32 @@ customElements.define(
           this.features.get(name) ||
           this.features.set(name, this.L.featureGroup()).get(name)
         );
-      else return this.getFeatureGroup(__DEFAULTFEATURENAME__);
+      else return this.getFeatureGroup(__feature__);
     }
-    feature({ feature = __DEFAULTFEATURENAME__, node }) {
+    feature({ feature = __feature__, node }) {
       node.addTo(this.getFeatureGroup(feature));
-      if (feature != __DEFAULTFEATURENAME__)
-        node.addTo(this.getFeatureGroup(__DEFAULTFEATURENAME__));
+      if (feature != __feature__)
+        node.addTo(this.getFeatureGroup(__feature__));
     }
     // ======================================================================== featurezoom
     // ======================================================================== setView
     setView({
-      lat,
-      lng,
-      coords = false,
+      lat = 52.2957,
+      lng = 4.6804,
       zoom = this.getAttribute("zoom") || 13,
     }) {
-      [lat, lng] = this.latlng(lat, lng, coords);
       this.map.setView([lat, lng], zoom);
     }
     // ======================================================================== circle
     circle({
       lat,
       lng,
-      coords = false,
       color = "green",
       fillColor = "lightgreen",
       fillOpacity = 0.5,
       radius = 100,
     }) {
-      let circle = this.L.circle(this.latlng(lat, lng, coords), {
+      let circle = this.L.circle([lat, lng], {
         color,
         fillColor,
         fillOpacity,
@@ -196,9 +179,8 @@ customElements.define(
     // ======================================================================== marker
     marker({
       markerNode,
-      lat,
-      lng,
-      coords = false,
+      lat = 52.2957,
+      lng = 4.6804,
       popup,
       openPopup = false,
       icon,
@@ -206,7 +188,6 @@ customElements.define(
       label = markerNode.getAttribute("label"),
     }) {
       //this.circle({ lat, lng });
-      [lat, lng] = this.latlng(lat, lng, coords);
       let marker = this.L.marker([lat, lng], {
         icon: this.L.divIcon({
           html: `<leaflet-marker-icon icon="${icon}"></leaflet-marker-icon>`,
@@ -257,7 +238,7 @@ customElements.define(
     connectedCallback() {
       let icon = this.getAttribute("icon");
       if (icon.includes(".")) {
-        this.innerHTML = `<img style="zoom:.4" src="${icon}" />`;
+        this.innerHTML = `<img src="${icon}" />`;
       } else {
         let pin =
           "130;m65 0c-24 0-43 19-43 43 0 8 2 15 6 21 2 3 0 0 2 3l36 62 36-62c2-3 0 0 2-3 4-6 6-14 6-21 0-24-19-42-45-43zm0 22c12 0 22 10 22 22 0 12-10 22-22 22s-22-10-22-22c0-12 10-22 22-22z";
