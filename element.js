@@ -185,7 +185,7 @@ customElements.define(
       openPopup = false,
       icon,
       feature,
-      label = markerNode.getAttribute("label"),
+      label = markerNode && markerNode.getAttribute("label"),
     }) {
       //this.circle({ lat, lng });
       let marker = this.L.marker([lat, lng], {

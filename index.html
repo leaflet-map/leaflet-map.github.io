@@ -1,9 +1,7 @@
 <html>
 
 <head>
-    <title><leaflet-map> Web Component</title>
     <script src="element.js"></script>
-    <script src="//file-size.github.io/element.js"></script>
     <style>
         body {
             font: 21px arial;
@@ -12,57 +10,57 @@
 </head>
 
 <body>
-    <style>
-        maps {
-            display: grid;
-            grid: 290px 290px/1fr 1fr;
-            gap: 5px;
-            background: green
-        }
-    </style>
-    <h1>&lt;leaflet-map> Web Component</h1>
-    <maps>
-        <leaflet-map id=M1 lat="52.09" lng="5.12">
-            <marker lat="52.09" lng="5.12" openPopup label="postcode">
-            </marker>
-        </leaflet-map>
-        <leaflet-map lat="52.372" lng="4.885" zoom="15">
-            <marker openPopup>
-                <b>Amsterdam</b><br>Amsterdam is the capital of the Netherlands.
-            </marker>
-        </leaflet-map>
-        <leaflet-map icon="https://roads.nl/content/themes/Arkin-Roads/images/favicon-32x32.png">
-            <marker lat="52.2957" lng="4.6804" openPopup label="Roads Technology">
-                <b>Roads Technology</b><br>Opaallaan 1180<br>2031 EC Haarlem<br>06-12345678<br><a
-                    href='https://www.Roads-Technology.nl'>www.Roads-Technology.nl</a>
-            </marker>
-            <style shadowRoot>
-                .leaflet-tooltip {
-                    background: #9cc318;
-                    padding: 0 2px;
-                    color: black;
-                    border-color: black;
-                }
+    Roads Locaties
 
-                .leaflet-tooltip-bottom:before {
-                    border-bottom-color: black;
-                }
-            </style>
-        </leaflet-map>
-        <leaflet-map lat="50.85" lng="5.69" icon="house">
-            <marker lat="51.924" lng="4.47">
-                <b>Rotterdam</b><br>Rotterdam is the second largest city of the Netherlands.
-            </marker>
-            <marker lat="50.85" lng="5.69">
-                <b>Maastricht</b><br>Maastricht is the capital of the province of Limburg.
-            </marker>
-        </leaflet-map>
-    </maps>
-    <hr>
-    <file-size gz src="https://leaflet-map.github.io/element.min.js"></file-size>
-    <script>
-        console.log(document.querySelectorAll('leaflet-map'), M1.features);
-    </script>
+    <leaflet-map icon="https://roads.nl/content/themes/Arkin-Roads/images/favicon-32x32.png">
+        <!-- style only only leaflet-map -->
+        <style shadowRoot>
+            .leaflet-tooltip {
+                background: #9cc318;
+                padding: 0 2px;
+                color: black;
+                border-color: black;
+            }
+
+            .leaflet-tooltip-bottom:before {
+                border-bottom-color: black;
+            }
+        </style>
+
+        <!-- all Roads Locations -->
+        <marker lat="52.2957" lng="4.6804" label="Roads Technology">
+            Roads Technology<br>Opaallaan 1180<br>2031 EC Haarlem<br>06-12345678<br><a
+                href='https://www.Roads-Technology.nl'>www.Roads-Technology.nl</a>
+        </marker>
+
+        <marker lat="52.3855" lng="4.6238" label="Appeltaart Imperium">
+            Appeltaart Imperium<br>Zijlweg 115<br>2013DE Haarlem<br>023-8000070<br>
+            <a href="https://www.Roads-Technology.nl">www.Roads-Technology.nl</a>
+        </marker>
+
+        <marker lat="52.3595" lng="4.9026" label="Roads Achter Oosteinde">
+            Roads Achter Oosteinde<br>Achter Oosteinde<br>1017XP Amsterdam<br>
+            <a href="https://www.Roads-Technology.nl">www.Roads-Technology.nl</a>
+
+        </marker>
+
+        <marker lat="52.3797" lng="4.6239" label="Badhuis Leidsebuurt">
+            Badhuis Leidsebuurt<br>Leidseplein 49<br>2013PW Haarlem<br>
+            <a href="https://www.Roads-Technology.nl">www.Roads-Technology.nl</a>
+        </marker>
+
+
+        <marker lat="52.3090" lng="4.7067" label="Basic-Fit Hoofddorp">
+            Basic-Fit Hoofddorp<br>Arnolduspark 16<br>2132CR Hoofddorp<br>06-14559967<br>
+            <a href="https://www.Roads-Technology.nl">www.Roads-Technology.nl</a>
+        </marker>
+
+
+        <marker lat="52.2730" lng="4.6272" label="Basic-Fit Nieuw-Vennep">
+            Basic-Fit Nieuw-Vennep<br>Lucas Bolsstraat 42<br>2152CZ Nieuw-Vennep<br>06-26445070<br>
+            <a href="https://www.Roads-Technology.nl">www.Roads-Technology.nl</a>
+        </marker>
+    </leaflet-map>
 </body>
 
 </html>
