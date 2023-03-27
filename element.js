@@ -146,8 +146,7 @@ customElements.define(
     }
     feature({ feature = __feature__, node }) {
       node.addTo(this.getFeatureGroup(feature));
-      if (feature != __feature__)
-        node.addTo(this.getFeatureGroup(__feature__));
+      if (feature != __feature__) node.addTo(this.getFeatureGroup(__feature__));
     }
     // ======================================================================== featurezoom
     // ======================================================================== setView
@@ -186,6 +185,8 @@ customElements.define(
       icon,
       feature,
       label = markerNode && markerNode.getAttribute("label"),
+      direction = (markerNode && markerNode.getAttribute("labeldirection")) ||
+        "bottom",
     }) {
       //this.circle({ lat, lng });
       let marker = this.L.marker([lat, lng], {
@@ -200,14 +201,14 @@ customElements.define(
       marker.addTo(this.map);
       this.feature({ node: marker, feature });
       // ---------------------------------------------------------------------- marker tooltip
-      this.markerlabel({ marker, lat, lng, label });
+      this.markerlabel({ marker, lat, lng, label, direction });
       // ---------------------------------------------------------------------- marker popup
       if (popup) marker.bindPopup(popup, { offset: this.L.point(0, -30) });
       if (openPopup) marker.openPopup();
       return marker;
     }
     // ======================================================================== markerlabel
-    markerlabel({ marker, lat, lng, label }) {
+    markerlabel({ marker, lat, lng, label, direction = "bottom" }) {
       if (label) {
         if (label == "postcode") {
           fetch(
@@ -217,13 +218,13 @@ customElements.define(
               //console.log(data);
               label = data.address.postcode;
               marker
-                .bindTooltip(label, { permanent: true, direction: "bottom" })
+                .bindTooltip(label, { permanent: true, direction })
                 .addTo(this.map);
             });
           });
         } else {
           marker
-            .bindTooltip(label, { permanent: true, direction: "bottom" })
+            .bindTooltip(label, { permanent: true, direction })
             .addTo(this.map);
         }
       }
